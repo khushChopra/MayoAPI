@@ -1,4 +1,5 @@
 <?php
 echo $_GET['phoneNumber'];
-echo $_GET['password']
+echo "<br>";
+echo hash('sha256',$_GET['password']);
 ?>
