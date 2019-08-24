@@ -41,8 +41,7 @@ switch ($method) {
 
         if($input['action']==1){
             //  echo "signup";
-            // curl --header "Content-Type: application/json" --request POST --data '{"action":1,"email":"khush@gmail.com","number":"9999999999","pass":"password","gender":"male","age":20,"location":"Varanasi","fullname":"Khush Chopra"}' https://purohitji.azurewebsites.net/user.php
-            $tsql1 = "select * from users where email='".$input['email']."'";
+            $tsql1 = "select * from employee where phoneNumber='".$input['phoneNumber']."'";
             $getResults= mysqli_query($conn, $tsql1);
             if($row = mysqli_fetch_array($getResults, mysqli_fetch_assoc)){
                 message_and_code("User already exists",400);
@@ -50,16 +49,16 @@ switch ($method) {
             }
             else{
                 // new user is to be created and token is sent to the user
-                $result['token'] = generateToken();
-                $email = $input['email'];
-                $token = hash('sha256', $result['token']);
-                $number = $input['number'];
-                $pass = hash('sha256', $input['pass']);
-                $gender = $input['gender'];
+
+
+                $phoneNumber = $input['phoneNumber'];
+                $password = hash('sha256', $input['password']);
+                $name = $input['name'];
                 $age = $input['age'];
-                $location = $input['location'];
-                $fullname = $input['fullname'];
-                $tsql1= "insert into users values('".$email."','".$token."','".$number."','".$pass."','".$gender."',".$age.",'".$location."','".$fullname."')";
+                $skill = $input['skill'];
+                $city = $input['city'];
+                $state = $input['state'];
+                $tsql1= "insert into employee values('".$phoneNumber."','".$password."','".$name."',".$age.",".$skill.",'".$city."','".$state."')";
                 $insertReview = mysqli_query($conn, $tsql1);
                 // check for server error
                 if($insertReview==FALSE){
@@ -67,6 +66,11 @@ switch ($method) {
                     break;
                 }
                 $result["message"] = "user created successfully";
+                $result['employee']['name'] = $name;
+	            $result['employee']['age'] = $age;
+	            $result['employee']['skill'] = $skill;
+	            $result['employee']['city'] = $city;
+	            $result['employee']['state'] = $state;
                 http_response_code(200);
                 echo json_encode($result);
                 break;
