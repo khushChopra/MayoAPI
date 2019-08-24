@@ -24,7 +24,7 @@ function message_and_code($message, $code){
 }
 switch ($method) {
     case 'GET':
-      	$tsql1 = "select * from employee where phoneNumber='".$_GET['phoneNumber']."' and password='".hash('sha256',$_GET['password'])."'";
+      	$tsql1 = "select * from employee where phoneNumber='".$_GET['phoneNumber']."'";
     	$getResults= mysqli_query($conn, $tsql1);
     	if($row = mysqli_fetch_array($getResults, mysqli_fetch_assoc)){
 
