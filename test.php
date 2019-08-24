@@ -1,7 +1,7 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-$servername = "database-mayo1.cusbnuvbxuoj.us-east-1.rds.amazonaws.com:3306";
+$servername = "database-mayo1.cusbnuvbxuoj.us-east-1.rds.amazonaws.com";
 $username = "admin";
 $password = "adminpass";
 $database = "mayo";
@@ -14,7 +14,7 @@ function message_and_code($message, $code){
 }
 
 
-$conn = mysqli_connect($servername, $username, $password, $database);
+$conn = mysql_connect($servername, $username, $password, $database);
 
 $method = $_SERVER['REQUEST_METHOD'];
 $input = json_decode(file_get_contents('php://input'),true);
