@@ -26,7 +26,8 @@ switch ($method) {
     case 'GET':
       	$tsql1 = "select * from employee where phoneNumber='".$_GET['phoneNumber']."' and password='".hash('sha256',$_GET['password'])."'";
     	$getResults= mysqli_query($conn, $tsql1);
-    	if($row = mysqli_fetch_array($getResults, mysqli_fetch_assoc)){
+
+    	if($row = mysqli_fetch_array($getResults)){
 
     		// send user data
     		$result["message"] = "User logged in successfully";
@@ -39,7 +40,7 @@ switch ($method) {
             break;
     	}
     	else{
-    		message_and_code("select * from employee where phoneNumber='".$_GET['phoneNumber']."' and password='".hash('sha256',$_GET['password'])."'"."-Phone number or password incorrect",400);
+    		message_and_code("Phone number or password incorrect",400);
         }
         break;
     case 'POST':
@@ -49,7 +50,7 @@ switch ($method) {
             //  echo "signup";
             $tsql1 = "select * from employee where phoneNumber='".$input['phoneNumber']."'";
             $getResults= mysqli_query($conn, $tsql1);
-            if($row = mysqli_fetch_array($getResults, mysqli_fetch_assoc)){
+            if($row = mysqli_fetch_array($getResults)){
                 message_and_code("User already exists",400);
                 break;
             }
