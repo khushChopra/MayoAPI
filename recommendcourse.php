@@ -24,7 +24,36 @@ function message_and_code($message, $code){
 }
 switch ($method) {
     case 'GET':
-        $tsql1 = "select * from course where city='".$_GET['city']."'";
+
+        $city = $_GET['city'];
+        $skill = $_GET['skill'];
+
+        $tsql1 = "select 
+                    skill, sum(numberOfPeople) as totNum
+                FROM
+                    jobRequest
+                WHERE
+                    city = '".$city."' and
+                    skill!=".$skill." and
+                    status!=2
+                GROUP BY
+                    skill
+                ORDER BY
+                    totNum DESC";
+        $getResults= mysqli_query($conn, $tsql1);
+        $skillWanted = -5;
+
+        if($row = mysqli_fetch_array($getResults)){
+            $skillWanted = $row['skill'];
+        }
+        if($skillWanted<0){
+            message_and_code("No course found",400);
+        }
+
+
+        $tsql1 = "select * from course where skill=".$skillWanted;
+
+
         $getResults= mysqli_query($conn, $tsql1);
 
         $count = 0;
@@ -33,23 +62,11 @@ switch ($method) {
             $result['course'][$count]['title'] = $row['title'];
             $result['course'][$count]['contact'] = $row['contact'];
             $result['course'][$count]['courseID'] = $row['courseID'];
+            $result['course'][$count]['skill'] = $row['skill'];
             $count = $count + 1;
         }
         $result["count"] = $count;
         echo json_encode($result);
-        break;
-    case 'POST':
-        $tsql1 = "insert into course (city, contact,body,title) VALUES ('".$input['city']."','".$input['contact']."','".$input['body']."','".$input['title']."')";
-        $insertReview = mysqli_query($conn, $tsql1);
-        // check for server error
-        if($insertReview==FALSE){
-            message_and_code("Server error",500);
-            break;
-        }
-        else{
-            message_and_code("Success",200);
-            break;
-        }
         break;
 }
 mysqli_close($conn);
