@@ -45,6 +45,10 @@ switch ($method) {
             message_and_code("Server error",500);
             break;
         }
+        else{
+            message_and_code("Success",500);
+            break;
+        }
         break;
 }
 mysqli_close($conn);
