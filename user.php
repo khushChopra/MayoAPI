@@ -24,7 +24,7 @@ function message_and_code($message, $code){
 }
 switch ($method) {
     case 'GET':
-      	$tsql1 = "select * from employee where phoneNumber='".$_GET['phoneNumber']."'";
+      	$tsql1 = "select * from employee where phoneNumber='".$_GET['phoneNumber']."' and password='".hash('sha256',$_GET['password'])."'";
     	$getResults= mysqli_query($conn, $tsql1);
     	if($row = mysqli_fetch_array($getResults, mysqli_fetch_assoc)){
 
@@ -39,7 +39,7 @@ switch ($method) {
             break;
     	}
     	else{
-    		message_and_code("Phone number or password incorrect",400);
+    		message_and_code("select * from employee where phoneNumber='".$_GET['phoneNumber']."' and password='".hash('sha256',$_GET['password'])."'"."-Phone number or password incorrect",400);
         }
         break;
     case 'POST':
