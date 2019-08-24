@@ -46,7 +46,7 @@ switch ($method) {
             break;
         }
         else{
-            message_and_code("Success",500);
+            message_and_code("Success",200);
             break;
         }
         break;
