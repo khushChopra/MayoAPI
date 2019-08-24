@@ -107,7 +107,7 @@ switch ($method) {
 	            $result['employee']['skill'] = $skill;
 	            $result['employee']['city'] = $city;
 	            $result['employee']['state'] = $state;
-                $result['employee']['address'] = $row['address'];
+                $result['employee']['address'] = $address;
                 http_response_code(200);
                 echo json_encode($result);
                 break;
