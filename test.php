@@ -14,5 +14,10 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 $method = $_SERVER['REQUEST_METHOD'];
 $input = json_decode(file_get_contents('php://input'),true);
 
-echo "Hey";
+if(!$conn){
+    echo "didnt connect";
+}
+else{
+    echo "connected";
+}
 ?>
