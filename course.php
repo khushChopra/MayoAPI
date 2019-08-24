@@ -33,13 +33,14 @@ switch ($method) {
             $result['course'][$count]['title'] = $row['title'];
             $result['course'][$count]['contact'] = $row['contact'];
             $result['course'][$count]['courseID'] = $row['courseID'];
+            $result['course'][$count]['hyperlink'] = $row['hyperlink'];
             $count = $count + 1;
         }
         $result["count"] = $count;
         echo json_encode($result);
         break;
     case 'POST':
-        $tsql1 = "insert into course (city, contact,body,title) VALUES ('".$input['city']."','".$input['contact']."','".$input['body']."','".$input['title']."')";
+        $tsql1 = "insert into course (city, contact,body,title,hyperlink) VALUES ('".$input['city']."','".$input['contact']."','".$input['body']."','".$input['title']."','".$input['hyperlink']."')";
         $insertReview = mysqli_query($conn, $tsql1);
         // check for server error
         if($insertReview==FALSE){
