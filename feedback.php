@@ -29,8 +29,9 @@ switch ($method) {
 
         $count = 0;
         while($row = mysqli_fetch_array($getResults)){
-            $result['feedback'][$count]['name'] = $row['name'];
-            $result['feedback'][$count]['address'] = $row['address'];
+            $result['feedback'][$count]['text'] = $row['text'];
+            $result['feedback'][$count]['rating'] = $row['rating'];
+            $result['feedback'][$count]['personID'] = $row['personID'];
             $count = $count + 1;
         }
         $result["count"] = $count;
