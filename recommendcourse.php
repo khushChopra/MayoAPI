@@ -28,31 +28,27 @@ switch ($method) {
         $city = $_GET['city'];
         $skill = $_GET['skill'];
 
-        $tsql1 = "select 
-                    skill, sum(numberOfPeople) as totNum
-                FROM
-                    jobRequest
-                WHERE
-                    city = '".$city."' and
-                    skill!=".$skill." and
-                    status!=2
-                GROUP BY
-                    skill
-                ORDER BY
-                    totNum DESC";
-        $getResults= mysqli_query($conn, $tsql1);
-        $skillWanted = -5;
 
-        if($row = mysqli_fetch_array($getResults)){
-            $skillWanted = $row['skill'];
-        }
-        if($skillWanted<0){
-            message_and_code("No course found",400);
-        }
-
-
-        $tsql1 = "select * from course where skill=".$skillWanted;
-
+        $tsql1 = "  SELECT 
+                        *
+                    FROM
+                        course
+                    JOIN
+                        (select 
+                            skill as pskill, sum(numberOfPeople) as totNum 
+                        from 
+                            jobRequest
+                        WHERE
+                            city = '".$city."' and
+                            skill!=".$skill." and
+                            status!=2
+                        GROUP BY
+                            skill  
+                        ) as A 
+                    WHERE   
+                        pskill=skill 
+                    ORDER BY
+                        totNum DESC";
 
         $getResults= mysqli_query($conn, $tsql1);
 
