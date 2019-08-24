@@ -24,22 +24,33 @@ function message_and_code($message, $code){
 }
 switch ($method) {
     case 'GET':
-        $tsql1 = "select * from course where city='".$_GET['city']."'";
+        // gives all
+
+        $tsql1 = "select * from jobRequest";
+        if($_GET['city']!=""){
+            $tsql1 = "select * from jobRequest where city='".$_GET['city']."'";
+        }
+
+        
         $getResults= mysqli_query($conn, $tsql1);
 
         $count = 0;
         while($row = mysqli_fetch_array($getResults)){
-            $result['course'][$count]['body'] = $row['body'];
-            $result['course'][$count]['title'] = $row['title'];
-            $result['course'][$count]['contact'] = $row['contact'];
-            $result['course'][$count]['courseID'] = $row['courseID'];
+            $result['jobRequest'][$count]['contractorID'] = $row['contractorID'];
+            $result['jobRequest'][$count]['jobID'] = $row['jobID'];
+            $result['jobRequest'][$count]['title'] = $row['title'];
+            $result['jobRequest'][$count]['numberOfPeople'] = $row['numberOfPeople'];
+            $result['jobRequest'][$count]['skill'] = $row['skill'];
+            $result['jobRequest'][$count]['city'] = $row['city'];
+            $result['jobRequest'][$count]['address'] = $row['address'];
+            $result['jobRequest'][$count]['status'] = $row['status'];
             $count = $count + 1;
         }
         $result["count"] = $count;
         echo json_encode($result);
         break;
     case 'POST':
-        $tsql1 = "insert into course (city, contact,body,title) VALUES ('".$input['city']."','".$input['contact']."','".$input['body']."','".$input['title']."')";
+        $tsql1 = "insert into jobRequest (contractorID, title, numberOfPeople, skill, city, address, status) VALUES ('".$input['contractorID']."','".$input['title']."',".$input['numberOfPeople'].",".$input['skill'].",'".$input['city']."','".$input['address']."',".$input['status'].")";
         $insertReview = mysqli_query($conn, $tsql1);
         // check for server error
         if($insertReview==FALSE){
