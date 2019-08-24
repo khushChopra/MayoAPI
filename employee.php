@@ -24,24 +24,50 @@ function message_and_code($message, $code){
 }
 switch ($method) {
     case 'GET':
-      	$tsql1 = "select * from employee where phoneNumber='".$_GET['phoneNumber']."' and password='".hash('sha256',$_GET['password'])."'";
-    	$getResults= mysqli_query($conn, $tsql1);
 
-    	if($row = mysqli_fetch_array($getResults)){
+        if($_GET['password']==""){
+            $tsql1 = "select * from employee where phoneNumber='".$_GET['phoneNumber']."'";
+            $getResults= mysqli_query($conn, $tsql1);
 
-    		// send user data
-    		$result["message"] = "User logged in successfully";
-            $result['employee']['name'] = $row['name'];
-            $result['employee']['age'] = $row['age'];
-            $result['employee']['skill'] = $row['skill'];
-            $result['employee']['city'] = $row['city'];
-            $result['employee']['state'] = $row['state'];
-            echo json_encode($result);
+            if($row = mysqli_fetch_array($getResults)){
+
+                // send user data
+                $result["message"] = "Here is your info";
+                $result['employee']['name'] = $row['name'];
+                $result['employee']['age'] = $row['age'];
+                $result['employee']['skill'] = $row['skill'];
+                $result['employee']['city'] = $row['city'];
+                $result['employee']['state'] = $row['state'];
+                echo json_encode($result);
+                break;
+            }
+            else{
+                message_and_code("Phone number incorrect",400);
+            }
             break;
-    	}
-    	else{
-    		message_and_code("Phone number or password incorrect",400);
         }
+        else{
+            $tsql1 = "select * from employee where phoneNumber='".$_GET['phoneNumber']."' and password='".hash('sha256',$_GET['password'])."'";
+            $getResults= mysqli_query($conn, $tsql1);
+
+            if($row = mysqli_fetch_array($getResults)){
+
+                // send user data
+                $result["message"] = "User logged in successfully";
+                $result['employee']['name'] = $row['name'];
+                $result['employee']['age'] = $row['age'];
+                $result['employee']['skill'] = $row['skill'];
+                $result['employee']['city'] = $row['city'];
+                $result['employee']['state'] = $row['state'];
+                echo json_encode($result);
+                break;
+            }
+            else{
+                message_and_code("Phone number or password incorrect",400);
+            }
+        }
+
+      	
         break;
     case 'POST':
 
