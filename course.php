@@ -39,7 +39,7 @@ switch ($method) {
         echo json_encode($result);
         break;
     case 'POST':
-        $tsql1 = "insert into course (courseID, contact,body,title) VALUES ('".$input['courseID']."','".$input['contact']."','".$input['body']."','".$input['title']."')";
+        $tsql1 = "insert into course (city, contact,body,title) VALUES ('".$input['city']."','".$input['contact']."','".$input['body']."','".$input['title']."')";
         $insertReview = mysqli_query($conn, $tsql1);
         // check for server error
         if($insertReview==FALSE){
