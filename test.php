@@ -25,4 +25,5 @@ if(!$conn){
 else{
     message_and_code("connected",200);
 }
+mysqli_close($conn);
 ?>
