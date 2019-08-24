@@ -24,24 +24,52 @@ function message_and_code($message, $code){
 }
 switch ($method) {
     case 'GET':
-      	$tsql1 = "select * from employee where phoneNumber='".$_GET['phoneNumber']."' and password='".hash('sha256',$_GET['password'])."'";
-    	$getResults= mysqli_query($conn, $tsql1);
 
-    	if($row = mysqli_fetch_array($getResults)){
+        if($_GET['password']==""){
+            $tsql1 = "select * from employee where phoneNumber='".$_GET['phoneNumber']."'";
+            $getResults= mysqli_query($conn, $tsql1);
 
-    		// send user data
-    		$result["message"] = "User logged in successfully";
-            $result['employee']['name'] = $row['name'];
-            $result['employee']['age'] = $row['age'];
-            $result['employee']['skill'] = $row['skill'];
-            $result['employee']['city'] = $row['city'];
-            $result['employee']['state'] = $row['state'];
-            echo json_encode($result);
+            if($row = mysqli_fetch_array($getResults)){
+
+                // send user data
+                $result["message"] = "Here is your info";
+                $result['employee']['name'] = $row['name'];
+                $result['employee']['age'] = $row['age'];
+                $result['employee']['skill'] = $row['skill'];
+                $result['employee']['city'] = $row['city'];
+                $result['employee']['state'] = $row['state'];
+                $result['employee']['address'] = $row['address'];
+                echo json_encode($result);
+                break;
+            }
+            else{
+                message_and_code("Phone number incorrect",400);
+            }
             break;
-    	}
-    	else{
-    		message_and_code("Phone number or password incorrect",400);
         }
+        else{
+            $tsql1 = "select * from employee where phoneNumber='".$_GET['phoneNumber']."' and password='".hash('sha256',$_GET['password'])."'";
+            $getResults= mysqli_query($conn, $tsql1);
+
+            if($row = mysqli_fetch_array($getResults)){
+
+                // send user data
+                $result["message"] = "User logged in successfully";
+                $result['employee']['name'] = $row['name'];
+                $result['employee']['age'] = $row['age'];
+                $result['employee']['skill'] = $row['skill'];
+                $result['employee']['city'] = $row['city'];
+                $result['employee']['state'] = $row['state'];
+                $result['employee']['address'] = $row['address'];
+                echo json_encode($result);
+                break;
+            }
+            else{
+                message_and_code("Phone number or password incorrect",400);
+            }
+        }
+
+      	
         break;
     case 'POST':
 
@@ -65,7 +93,8 @@ switch ($method) {
                 $skill = $input['skill'];
                 $city = $input['city'];
                 $state = $input['state'];
-                $tsql1= "insert into employee values('".$phoneNumber."','".$password."','".$name."',".$age.",".$skill.",'".$city."','".$state."')";
+                $address = $input['address'];
+                $tsql1= "insert into employee values('".$phoneNumber."','".$password."','".$name."',".$age.",".$skill.",'".$city."','".$state."','".$address."')";
                 $insertReview = mysqli_query($conn, $tsql1);
                 // check for server error
                 if($insertReview==FALSE){
@@ -78,6 +107,7 @@ switch ($method) {
 	            $result['employee']['skill'] = $skill;
 	            $result['employee']['city'] = $city;
 	            $result['employee']['state'] = $state;
+                $result['employee']['address'] = $row['address'];
                 http_response_code(200);
                 echo json_encode($result);
                 break;
@@ -94,8 +124,9 @@ switch ($method) {
                 $skill = $input['skill'];
                 $city = $input['city'];
                 $state = $input['state'];
+                $address = $input['address'];
 
-                $tsql1= "update employee set name='".$name."',age=".$age.",skill=".$skill.",city='".$city."',state='".$state."' where phoneNumber='".$input['phoneNumber']."'";
+                $tsql1= "update employee set name='".$name."',age=".$age.",skill=".$skill.",city='".$city."',state='".$state."',address='".$address."' where phoneNumber='".$input['phoneNumber']."'";
 
                 $updateReview = mysqli_query($conn, $tsql1);
                 // check for server error
@@ -109,7 +140,8 @@ switch ($method) {
 	            $result['employee']['age'] = $age;
 	            $result['employee']['skill'] = $skill;
 	            $result['employee']['city'] = $city;
-	            $result['employee']['state'] = $state;
+                $result['employee']['state'] = $state;
+                $result['employee']['address'] = $address;
 
 
                 http_response_code(200);
