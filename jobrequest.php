@@ -50,6 +50,26 @@ switch ($method) {
         echo json_encode($result);
         break;
     case 'POST':
+
+
+        if($input['action']==1){
+            $tsql1 = "update jobRequest set status=".$input['status']." where jobID=".$input['jobID'];
+            $updateReview = mysqli_query($conn, $tsql1);
+            // check for server error
+            if($updateReview==FALSE){
+                message_and_code("Server error",500);
+                break;
+            }
+            else{
+                message_and_code("Success",200);
+                break;
+            }
+            break;
+        }
+
+
+
+
         $tsql1 = "insert into jobRequest (contractorID, title, numberOfPeople, skill, city, address, status) VALUES ('".$input['contractorID']."','".$input['title']."',".$input['numberOfPeople'].",".$input['skill'].",'".$input['city']."','".$input['address']."',".$input['status'].")";
         $insertReview = mysqli_query($conn, $tsql1);
         // check for server error
