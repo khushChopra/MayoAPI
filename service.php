@@ -24,16 +24,6 @@ function message_and_code($message, $code){
 }
 switch ($method) {
     case 'GET':
-
-    Create table govt (
-    serviceID  int AUTO_INCREMENT PRIMARY KEY,
-    contact varchar(256),
-    city varchar(256),
-    title varchar(256),
-    body varchar(256)
-)
-
-
         $tsql1 = "select * from govt where city='".$_GET['city']."'";
         $getResults= mysqli_query($conn, $tsql1);
 
